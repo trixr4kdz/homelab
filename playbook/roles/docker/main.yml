@@ -10,7 +10,7 @@
   get_url:
     url: https://get.docker.com
     dest: /home/{{ ansible_ssh_user }}/get_docker.sh
-    mode: u=rw,g=r,o=r
+    mode: u=rwx,g=rx,o=rx
 
 - name: Add '{{ ansible_ssh_user }}' to docker group
   user:

@@ -6,9 +6,13 @@
   apt:
     upgrade: safe
 
-- name: Install tmux
+- name: Install git, tmux, vim, zsh
   apt:
-    name: tmux 
+    name: 
+      - git
+      - tmux 
+      - vim
+      - zsh
     state: present
 
 - name: Set .tmux.conf
@@ -18,27 +22,24 @@
     owner: '{{ ansible_ssh_user }}'
     group: pi
     mode: u=rw,g=r,o=r
-  
-- name: Install ZSH
-  apt:
-    name: zsh
-    state: present
 
-- name: Change '{{ ansible_ssh_user }}' shell in /etc/passwd
+- name: Change shell in /etc/passwd to use /usr/bin/zsh
   replace:
-    path: /home/pi/passwd 
+    path: /etc/passwd 
     regexp: (?<=pi:)\/(.)+\/bash$
     replace: /usr/bin/zsh
 
 - name: Download ZSH install script
   get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    dest: /home/{{ ansible_ssh_user }}/zsh-install.sh
-    mode: u=rw,g=r,o=r
+    dest: /home/{{ ansible_ssh_user }}/zsh-install.sh --unattended
+    mode: u=rwx,g=rx,o=rx
 
 - name: Run the ZSH install script
   command:
     cmd: /home/{{ ansible_ssh_user }}/zsh-install.sh
+  become: yes
+  become_user: root
 
 - name: Ensure ZSH_THEME is agnoster
   lineinfile:
@@ -46,11 +47,6 @@
     line: ZSH_THEME="agnoster"
     regexp: ZSH_THEME=
     firstmatch: yes
-    
-- name: Install vim
-  apt:
-    name: vim
-    state: present
 
 - name: Copy local vimrc file to /home/{{ ansible_ssh_user }}.vimrc
   copy:

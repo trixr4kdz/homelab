@@ -21,9 +21,3 @@
       include_role:
         name: docker
       when: dpkg_docker_stat.failed
-
-    # - name: Add new user 'trix'
-    #   user:
-    #     name: trix
-    #     shell: /usr/bin/zsh
-    #     password: '{{ trix_pw }}'
