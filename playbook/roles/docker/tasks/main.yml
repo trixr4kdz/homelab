@@ -12,7 +12,22 @@
     dest: /home/{{ ansible_ssh_user }}/get_docker.sh
     mode: u=rwx,g=rx,o=rx
 
-- name: Add '{{ ansible_ssh_user }}' to docker group
+- name: Remove older versions of docker if they exist
+  apt:
+    name:
+      - docker 
+      - docker-engine 
+      - docker.io   
+      - containerd 
+      - runc
+    state: absent
+
+- name: Run get_docker script to install docker
+  command:
+    cmd: /home/{{ ansible_ssh_user }}/get_docker.sh
+  become_user: root
+
+- name: Add ssh user to 'docker' group
   user:
     name: '{{ ansible_ssh_user }}'
     groups: [docker]
@@ -22,4 +37,12 @@
   command:
     cmd: /home/{{ ansible_ssh_user }}/get_docker.sh
 
+# - name: Uninstall docker
+#   apt:
+#     name:
+#       - docker-ce
+#       - docker-ce-cli
+#       - containerd.io
+#     state: absent
+#     purge: yes
 

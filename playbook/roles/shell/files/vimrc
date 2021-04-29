@@ -1,4 +1,4 @@
-colorscheme molokai
+colorscheme solarized
 set number
 set wrap
 set hlsearch

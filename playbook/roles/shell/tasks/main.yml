@@ -38,8 +38,6 @@
 - name: Check if oh-my-zsh is already installed
   stat:
     path: /home/{{ ansible_ssh_user }}/.oh-my-zsh
-  become: yes
-  become_user: root
   register: zsh_check
 
 - name: Run the ZSH install script if oh-my-zsh is not already installed
@@ -51,8 +49,8 @@
   copy:
     src: files/zshrc
     dest: /home/{{ ansible_ssh_user }}/.zshrc
-  
 
+# TODO: Fix monokai/molokai discrepancy. Not sure why it's 'monokai' on cheshire *shrug*
 - name: Copy local vimrc file
   copy:
     src: files/vimrc
