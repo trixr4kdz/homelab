@@ -1,0 +1,58 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Upgrade apt packages
+  apt:
+    upgrade: safe
+
+- name: Install tmux
+  apt:
+    name: tmux 
+    state: present
+
+- name: Set .tmux.conf
+  copy:
+    src: files/tmux.conf
+    dest: '/home/{{ ansible_ssh_user }}/.tmux.conf'
+    owner: '{{ ansible_ssh_user }}'
+    group: pi
+    mode: u=rw,g=r,o=r
+  
+- name: Install ZSH
+  apt:
+    name: zsh
+    state: present
+
+- name: Change '{{ ansible_ssh_user }}' shell in /etc/passwd
+  replace:
+    path: /home/pi/passwd 
+    regexp: (?<=pi:)\/(.)+\/bash$
+    replace: /usr/bin/zsh
+
+- name: Download ZSH install script
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /home/{{ ansible_ssh_user }}/zsh-install.sh
+    mode: u=rw,g=r,o=r
+
+- name: Run the ZSH install script
+  command:
+    cmd: /home/{{ ansible_ssh_user }}/zsh-install.sh
+
+- name: Ensure ZSH_THEME is agnoster
+  lineinfile:
+    path: /home/{{ ansible_ssh_user }}/.zshrc
+    line: ZSH_THEME="agnoster"
+    regexp: ZSH_THEME=
+    firstmatch: yes
+    
+- name: Install vim
+  apt:
+    name: vim
+    state: present
+
+- name: Copy local vimrc file to /home/{{ ansible_ssh_user }}.vimrc
+  copy:
+    src: files/vimrc
+    dest: /home/{{ ansible_ssh_user }}/.vimrc

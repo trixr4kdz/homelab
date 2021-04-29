@@ -1,0 +1,29 @@
+---
+- name: Configure Raspberry Pi cluster
+  hosts: all
+  gather_facts: no
+  remote_user: pi
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Include 'shell' role
+      include_role:
+        name: shell
+
+    - name: Check that docker is already installed
+      command:
+        cmd: /usr/bin/dpkg -l docker
+      register: dpkg_docker_stat
+      ignore_errors: yes
+    
+    - name: Include 'docker' role if not already installed
+      include_role:
+        name: docker
+      when: dpkg_docker_stat.failed
+
+    # - name: Add new user 'trix'
+    #   user:
+    #     name: trix
+    #     shell: /usr/bin/zsh
+    #     password: '{{ trix_pw }}'

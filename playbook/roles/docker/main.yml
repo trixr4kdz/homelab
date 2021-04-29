@@ -1,0 +1,25 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Upgrade apt packages
+  apt:
+    upgrade: safe
+
+- name: Pull down 'easy-install' script from get.docker.com
+  get_url:
+    url: https://get.docker.com
+    dest: /home/{{ ansible_ssh_user }}/get_docker.sh
+    mode: u=rw,g=r,o=r
+
+- name: Add '{{ ansible_ssh_user }}' to docker group
+  user:
+    name: '{{ ansible_ssh_user }}'
+    groups: [docker]
+    append: yes
+
+- name: Run get_docker.sh to install docker
+  command:
+    cmd: /home/{{ ansible_ssh_user }}/get_docker.sh
+
+

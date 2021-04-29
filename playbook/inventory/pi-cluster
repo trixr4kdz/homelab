@@ -1,0 +1,25 @@
+[pis]
+white-rabbit ansible_host=192.168.2.111
+cheshire  ansible_host=192.168.2.198
+mad-hatter   ansible_host=192.168.2.200
+
+[k8s-cluster]
+white-rabbit ansible_host=192.168.2.111
+cheshire  ansible_host=192.168.2.198
+mad-hatter   ansible_host=192.168.2.200
+
+[plex]
+cheshire
+
+[homeassistant]
+white-rabbit
+
+[cv-playground]
+mad-hatter
+
+[model3]
+mad-hatter
+
+[model4]
+cheshire
+white-rabbit
