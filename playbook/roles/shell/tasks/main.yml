@@ -32,31 +32,28 @@
 - name: Download ZSH install script
   get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    dest: /home/{{ ansible_ssh_user }}/zsh-install.sh --unattended
+    dest: /home/{{ ansible_ssh_user }}/zsh-install.sh
     mode: u=rwx,g=rx,o=rx
 
 - name: Check if oh-my-zsh is already installed
   stat:
-    path: /root/.oh-my-zsh
+    path: /home/{{ ansible_ssh_user }}/.oh-my-zsh
   become: yes
   become_user: root
   register: zsh_check
 
 - name: Run the ZSH install script if oh-my-zsh is not already installed
   command:
-    cmd: /home/{{ ansible_ssh_user }}/zsh-install.sh
-  become: yes
-  become_user: root
+    cmd: /home/{{ ansible_ssh_user }}/zsh-install.sh --unattended
   when: not zsh_check.stat.exists
 
-- name: Ensure ZSH_THEME is agnoster
-  lineinfile:
-    path: /home/{{ ansible_ssh_user }}/.zshrc
-    line: ZSH_THEME="agnoster"
-    regexp: ZSH_THEME=
-    firstmatch: yes
+- name: Copy preferred .zshrc config
+  copy:
+    src: files/zshrc
+    dest: /home/{{ ansible_ssh_user }}/.zshrc
+  
 
-- name: Copy local vimrc file to /home/{{ ansible_ssh_user }}.vimrc
+- name: Copy local vimrc file
   copy:
     src: files/vimrc
     dest: /home/{{ ansible_ssh_user }}/.vimrc

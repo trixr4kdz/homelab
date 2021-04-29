@@ -20,4 +20,4 @@
     - name: Include 'docker' role if not already installed
       include_role:
         name: docker
-      when: dpkg_docker_stat.failed
+      when: dpkg_docker_stat.rc == 1
