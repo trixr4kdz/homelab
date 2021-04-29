@@ -35,11 +35,19 @@
     dest: /home/{{ ansible_ssh_user }}/zsh-install.sh --unattended
     mode: u=rwx,g=rx,o=rx
 
-- name: Run the ZSH install script
+- name: Check if oh-my-zsh is already installed
+  stat:
+    path: /root/.oh-my-zsh
+  become: yes
+  become_user: root
+  register: zsh_check
+
+- name: Run the ZSH install script if oh-my-zsh is not already installed
   command:
     cmd: /home/{{ ansible_ssh_user }}/zsh-install.sh
   become: yes
   become_user: root
+  when: not zsh_check.stat.exists
 
 - name: Ensure ZSH_THEME is agnoster
   lineinfile:
