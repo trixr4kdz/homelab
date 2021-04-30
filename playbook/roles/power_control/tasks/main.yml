@@ -1,0 +1,12 @@
+- name: Shutdown system
+  shutdown:
+    delay: '{{ shutdown_delay | default(0) }}'
+  tags: 
+    - shutdown
+  
+- name: Reboot system
+  reboot:
+    pre_boot_delay: '{{ reboot_delay | default(0) }}'
+    post_boot_delay: 60
+  tags:
+    - reboot
