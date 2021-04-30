@@ -7,6 +7,12 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
+    - name: Exchange ssh keys
+      authorized_key:
+        user: '{{ ansible_ssh_user }}'
+        key: '{{ lookup("file", lookup("env", "HOME") + "/.ssh/id_rsa.pub") }}'
+        state: present
+
     - name: Include 'shell' role
       include_role:
         name: shell
