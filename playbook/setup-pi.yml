@@ -3,7 +3,6 @@
   hosts: all
   gather_facts: no
   remote_user: pi
-  become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
