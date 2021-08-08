@@ -1,0 +1,19 @@
+- name: Enable c-group
+  lineinfile:
+    path: /boot/firmware/cmdline.txt
+    line: cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+    state: present
+
+- name: Fetch Kubernetes GPG key from google.com
+  debug:
+    msg: 'TODO'
+
+- name: 
+  debug:
+    msg: 'TODO'
+
+- name: Install kubeadm
+  apt:
+    name: kubeadm
+    state: present
+    update_cache: yes

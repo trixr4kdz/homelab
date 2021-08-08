@@ -1,0 +1,8 @@
+---
+- name: Test
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Test
+      debug:
+        msg: '{{ ansible_default_ipv4.address }}'
