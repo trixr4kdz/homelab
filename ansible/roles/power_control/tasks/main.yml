@@ -3,6 +3,7 @@
     delay: '{{ shutdown_delay | default(0) }}'
   tags: 
     - shutdown
+  when: shutdown is defined and (shutdown | bool)
   
 - name: Reboot system
   reboot:
@@ -10,3 +11,4 @@
     post_reboot_delay: 60
   tags:
     - reboot
+  when: reboot is defined and (reboot | bool)
