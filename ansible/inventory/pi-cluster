@@ -1,5 +1,5 @@
 [pis]
-white-rabbit ansible_host=192.168.0.7
+white-rabbit ansible_host=white-rabbit.local
 cheshire     ansible_host=cheshire.local
 mad-hatter   ansible_host=mad-hatter.local
 
